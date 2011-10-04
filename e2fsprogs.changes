@@ -1,0 +1,33 @@
+* Sun Jun 05 2011 Anas Nashif <anas.nashif@intel.com> - 1.41.9
+- Split documentation and locale into seperate packages
+
+* Mon May 10 2010 Yan Li <yan.i.li@intel.com> - 1.41.9
+- Make the last-mount-time and last-write-time checks preen OK (BMC#1794)
+
+* Sun Mar 14 2010 Anas Nashif <anas.nashif@intel.com> - 1.41.9
+- Do not run tests on ARM
+
+* Sat Feb 13 2010 Anas Nashif <anas.nashif@intel.com> - 1.41.9
+- Remove self Provides
+
+* Tue Dec 08 2009 Passion Zhao <passion.zhao@intel.com> - 1.41.9-2
+- Fix build error caused by strip permission:
+  "/usr/bin/strip: unable to copy file '.../e2fsprogs-1.41.9-2.5.moblin2.i386/usr/lib/libcom_err.a'; 
+  reason: Permission denied"
+
+* Thu Aug 27 2009 Passion Zhao <passion.zhao@intel.com> - 1.41.9-1
+- Upgrade to 1.41.9 
+- Disable private libuuid&uuidd (replaced by util-linux-ng)
+
+* Thu Jul 17 2009 Austin Zhang <austin.zhang@intel.com> 1.41.8
+- Update to 1.41.8 and Disable blkid
+ 
+* Wed Dec 10 2008 Anas Nashif <anas.nashif@intel.com> 1.41.3
+- Disable uuidd daemon
+
+* Sun Nov 30 2008 Anas Nashif <anas.nashif@intel.com> 1.41.3
+- Added missing files
+
+* Sun Nov 30 2008 Anas Nashif <anas.nashif@intel.com> 1.41.3
+- Update to 1.41.3
+

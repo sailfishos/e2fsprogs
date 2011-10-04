@@ -1,0 +1,28 @@
+From: Yan Li <yan.i.li@intel.com>
+Date: Mon, 10 May 2010 11:23:24 +0800
+Subject: [PATCH] (BMC#1794) Make last-mount-time and last-write-time checks preen OK
+
+A wrong last-mount-time or last-write-time is most probably due to a
+broken RTC or a radical clock change, and it shouldn't be fatal.
+Auto preen is OK.
+
+Signed-off-by: Yan Li <yan.i.li@intel.com>
+---
+diff -Nur e2fsprogs-1.41.9/e2fsck/problem.c e2fsprogs-1.41.9.fix/e2fsck/problem.c
+--- e2fsprogs-1.41.9/e2fsck/problem.c	2009-08-23 01:19:04.000000000 +0800
++++ e2fsprogs-1.41.9.fix/e2fsck/problem.c	2010-05-10 11:18:50.000000000 +0800
+@@ -335,12 +335,12 @@
+ 	/* Last mount time is in the future */
+ 	{ PR_0_FUTURE_SB_LAST_MOUNT,
+ 	  N_("@S last mount time (%t,\n\tnow = %T) is in the future.\n"),
+-	  PROMPT_FIX, PR_NO_OK },
++	  PROMPT_FIX, PR_PREEN_OK },
+ 
+ 	/* Last write time is in the future */
+ 	{ PR_0_FUTURE_SB_LAST_WRITE,
+ 	  N_("@S last write time (%t,\n\tnow = %T) is in the future.\n"),
+-	  PROMPT_FIX, PR_NO_OK },
++	  PROMPT_FIX, PR_PREEN_OK },
+ 
+ 	{ PR_0_EXTERNAL_JOURNAL_HINT,
+ 	  N_("@S hint for external superblock @s %X.  "),

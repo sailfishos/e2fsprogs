@@ -1,0 +1,252 @@
+%define	_root_sbindir	/sbin
+%define	_root_libdir	/%{_lib}
+
+Summary: Utilities for managing ext2, ext3, and ext4 filesystems
+Name: e2fsprogs
+Version: 1.41.9
+Release: 2
+# License tags based on COPYING file distinctions for various components
+License: GPLv2
+Group: System/Base
+Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source1: ext2_types-wrapper.h
+Patch2: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
+Patch3: meego-time-check-preen-ok.patch
+
+Url: http://e2fsprogs.sourceforge.net/
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Obsoletes: e4fsprogs
+Provides: e4fsprogs
+BuildRequires: pkgconfig, texinfo
+BuildRequires: libblkid-devel
+BuildRequires: libuuid-devel
+
+%description
+The e2fsprogs package contains a number of utilities for creating,
+checking, modifying, and correcting any inconsistencies in second,
+third and fourth extended (ext2/ext3/ext4) filesystems. E2fsprogs
+contains e2fsck (used to repair filesystem inconsistencies after an
+unclean shutdown), mke2fs (used to initialize a partition to contain
+an empty ext2 filesystem), debugfs (used to examine the internal
+structure of a filesystem, to manually repair a corrupted
+filesystem, or to create test cases for e2fsck), tune2fs (used to
+modify filesystem parameters), and most of the other core ext2fs
+filesystem utilities.
+
+You should install the e2fsprogs package if you need to manage the
+performance of an ext2, ext3, or ext4 filesystem.
+
+%package libs
+Summary: Ext2/3/4 filesystem-specific shared libraries and headers
+Group: System/Libraries
+License: GPLv2 and LGPLv2
+Requires(post): /sbin/ldconfig
+
+%description libs
+E2fsprogs-libs contains libe2p and libext2fs, the libraries of the
+e2fsprogs package.
+
+These libraries are used to directly acccess ext2/3/4 filesystems
+from userspace.
+
+%package devel
+Summary: Ext2/3/4 filesystem-specific static libraries and headers
+Group: Development/Libraries
+License: GPLv2 and LGPLv2
+Requires: e2fsprogs-libs = %{version}-%{release}
+Requires: gawk
+Requires: libcom_err-devel
+
+%description devel
+E2fsprogs-devel contains the libraries and header files needed to
+develop second, third and fourth extended (ext2/ext3/ext4)
+filesystem-specific programs.
+
+You should install e2fsprogs-devel if you want to develop ext2/3/4
+filesystem-specific programs. If you install e2fsprogs-devel, you'll
+also want to install e2fsprogs.
+
+%package -n libcom_err
+Summary: Common error description library
+Group: System/Libraries
+License: MIT
+
+%description -n libcom_err
+This is the common error description library, part of e2fsprogs.
+
+libcom_err is an attempt to present a common error-handling mechanism.
+
+%package -n libcom_err-devel
+Summary: Common error description library
+Group: Development/Libraries
+License: MIT
+Requires: libcom_err = %{version}-%{release}
+Requires: pkgconfig
+
+%description -n libcom_err-devel
+This is the common error description development library and headers,
+part of e2fsprogs.  It contains the compile_et commmand, used
+to convert a table listing error-code names and associated messages
+messages into a C source file suitable for use with the library.
+
+libcom_err is an attempt to present a common error-handling mechanism.
+
+%package -n libss
+Summary: Command line interface parsing library
+Group: System/Libraries
+License: MIT
+
+%description -n libss
+This is libss, a command line interface parsing library, part of e2fsprogs.
+
+This package includes a tool that parses a command table to generate
+a simple command-line interface parser, the include files needed to
+compile and use it, and the static libs.
+
+It was originally inspired by the Multics SubSystem library.
+
+%package -n libss-devel
+Summary: Command line interface parsing library
+Group: Development/Libraries
+License: MIT
+Requires: libss = %{version}-%{release}
+Requires: pkgconfig
+
+%description -n libss-devel
+This is the command line interface parsing (libss) development library
+and headers, part of e2fsprogs.  It contains the mk_cmds command, which
+parses a command table to generate a simple command-line interface parser.
+
+It was originally inspired by the Multics SubSystem library.
+
+%prep
+%setup -q -n e2fsprogs-%{version}
+# ignore some flag differences on primary/backup sb feature checks
+# mildly unsafe but 'til I get something better, avoid full fsck
+# after an selinux install...
+%patch2 -p1 -b .featurecheck
+%patch3 -p1
+
+%build
+%configure --enable-elf-shlibs --enable-nls --disable-e2initrd-helper --disable-libblkid --disable-uuidd --disable-libuuid
+make %{?_smp_mflags} V=1
+
+%install
+rm -rf %{buildroot}
+export PATH=/sbin:$PATH
+make install install-libs DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p" \
+	root_sbindir=%{_root_sbindir} root_libdir=%{_root_libdir}
+
+# ugly hack to allow parallel install of 32-bit and 64-bit -devel packages:
+%define multilib_arches %{ix86} x86_64
+
+%ifarch %{multilib_arches}
+mv -f $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types.h \
+      $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types-%{_arch}.h
+install -p -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types.h
+%endif
+
+%find_lang %{name}
+
+chmod -R u+w $RPM_BUILD_ROOT/*
+
+%check
+%ifnarch %{arm}
+make check
+%endif
+
+%clean
+rm -rf %{buildroot}
+
+%post libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
+
+%post -n libcom_err -p /sbin/ldconfig
+%postun -n libcom_err -p /sbin/ldconfig
+
+%post -n libss -p /sbin/ldconfig
+%postun -n libss -p /sbin/ldconfig
+
+%docs_package
+
+%lang_package
+
+
+%files 
+%defattr(-,root,root,-)
+%doc README 
+
+%config(noreplace) /etc/mke2fs.conf
+%{_root_sbindir}/badblocks
+%{_root_sbindir}/debugfs
+%{_root_sbindir}/dumpe2fs
+%{_root_sbindir}/e2fsck
+%{_root_sbindir}/e2image
+%{_root_sbindir}/e2label
+%{_root_sbindir}/e2undo
+%{_root_sbindir}/fsck
+%{_root_sbindir}/fsck.ext2
+%{_root_sbindir}/fsck.ext3
+%{_root_sbindir}/fsck.ext4
+%{_root_sbindir}/fsck.ext4dev
+%{_root_sbindir}/logsave
+%{_root_sbindir}/mke2fs
+%{_root_sbindir}/mkfs.ext2
+%{_root_sbindir}/mkfs.ext3
+%{_root_sbindir}/mkfs.ext4
+%{_root_sbindir}/mkfs.ext4dev
+%{_root_sbindir}/resize2fs
+%{_root_sbindir}/tune2fs
+
+%{_sbindir}/filefrag
+%{_sbindir}/mklost+found
+%{_sbindir}/e2freefrag
+
+%{_bindir}/chattr
+%{_bindir}/lsattr
+
+%files libs
+%defattr(-,root,root)
+%{_root_libdir}/libe2p.so.*
+%{_root_libdir}/libext2fs.so.*
+
+%files devel
+%defattr(-,root,root)
+%{_infodir}/libext2fs.info*
+%{_libdir}/libe2p.a
+%{_libdir}/libe2p.so
+%{_libdir}/libext2fs.a
+%{_libdir}/libext2fs.so
+%{_libdir}/pkgconfig/e2p.pc
+%{_libdir}/pkgconfig/ext2fs.pc
+
+%{_includedir}/e2p
+%{_includedir}/ext2fs
+
+%files -n libcom_err
+%defattr(-,root,root)
+%{_root_libdir}/libcom_err.so.*
+
+%files -n libcom_err-devel
+%defattr(-,root,root)
+%{_bindir}/compile_et
+%{_libdir}/libcom_err.a
+%{_libdir}/libcom_err.so
+%{_datadir}/et
+%{_includedir}/et
+%{_libdir}/pkgconfig/com_err.pc
+
+%files -n libss
+%defattr(-,root,root)
+%{_root_libdir}/libss.so.*
+
+%files -n libss-devel
+%defattr(-,root,root)
+%{_bindir}/mk_cmds
+%{_libdir}/libss.a
+%{_libdir}/libss.so
+%{_datadir}/ss
+%{_includedir}/ss
+%{_libdir}/pkgconfig/ss.pc
+
+
