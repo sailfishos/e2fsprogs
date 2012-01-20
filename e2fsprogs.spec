@@ -151,7 +151,7 @@ install -p -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types.h
 chmod -R u+w $RPM_BUILD_ROOT/*
 
 %check
-%ifnarch %{arm}
+%if ! 0%{?qemu_user_space_build}
 make check
 %endif
 

@@ -1,3 +1,6 @@
+* Fri Jan 20 2012 Carsten Munk <carsten.munk@gmail.com> - 1.41.9
+- Switch from ifnarch to %if ! 0%{?qemu_user_space_build}
+
 * Sun Jun 05 2011 Anas Nashif <anas.nashif@intel.com> - 1.41.9
 - Split documentation and locale into seperate packages
 
