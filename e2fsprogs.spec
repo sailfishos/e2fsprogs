@@ -3,23 +3,23 @@
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.41.9
+Version: 1.42.2
 Release: 2
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
 Group: System/Base
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1: ext2_types-wrapper.h
-Patch2: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
-Patch3: meego-time-check-preen-ok.patch
+Patch0: meego-time-check-preen-ok.patch
+Patch1: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
+Patch2: e2fsprogs-1.42-blocksize.patch
 
 Url: http://e2fsprogs.sourceforge.net/
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Obsoletes: e4fsprogs
 Provides: e4fsprogs
 BuildRequires: pkgconfig, texinfo
-BuildRequires: libblkid-devel
-BuildRequires: libuuid-devel
+BuildRequires: pkgconfig(blkid)
+BuildRequires: pkgconfig(uuid)
 
 %description
 The e2fsprogs package contains a number of utilities for creating,
@@ -124,8 +124,9 @@ It was originally inspired by the Multics SubSystem library.
 # ignore some flag differences on primary/backup sb feature checks
 # mildly unsafe but 'til I get something better, avoid full fsck
 # after an selinux install...
-%patch2 -p1 -b .featurecheck
-%patch3 -p1
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-e2initrd-helper --disable-libblkid --disable-uuidd --disable-libuuid
@@ -201,6 +202,7 @@ rm -rf %{buildroot}
 %{_sbindir}/filefrag
 %{_sbindir}/mklost+found
 %{_sbindir}/e2freefrag
+%{_sbindir}/e4defrag
 
 %{_bindir}/chattr
 %{_bindir}/lsattr
@@ -215,14 +217,15 @@ rm -rf %{buildroot}
 %{_infodir}/libext2fs.info*
 %{_libdir}/libe2p.a
 %{_libdir}/libe2p.so
+%{_libdir}/libquota.a
 %{_libdir}/libext2fs.a
 %{_libdir}/libext2fs.so
 %{_libdir}/pkgconfig/e2p.pc
 %{_libdir}/pkgconfig/ext2fs.pc
-
+%{_libdir}/pkgconfig/quota.pc
 %{_includedir}/e2p
 %{_includedir}/ext2fs
-
+%{_includedir}/quota/mkquota.h
 %files -n libcom_err
 %defattr(-,root,root)
 %{_root_libdir}/libcom_err.so.*
@@ -234,6 +237,7 @@ rm -rf %{buildroot}
 %{_libdir}/libcom_err.so
 %{_datadir}/et
 %{_includedir}/et
+%{_includedir}/com_err.h
 %{_libdir}/pkgconfig/com_err.pc
 
 %files -n libss
