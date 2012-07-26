@@ -1,3 +1,8 @@
+* Tue Jul 24 2012 Marko Saukko <marko.saukko@jollamobile.com> - 1.42.4
+- Update to version 1.42.4
+- Drop fsck from the package, moved to util-linux
+- Mer never had e4fsprogs so no need for Obsolete/Provide it.
+
 * Wed Apr 18 2012 Carsten Munk <carsten.munk@gmail.com> - 1.42.2
 - Upgrade to 1.42.2, fix m_no_opt test case problem on tmpfs 
   by defaulting to -b 2048, fixes MER#301

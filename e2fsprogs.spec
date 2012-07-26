@@ -1,23 +1,20 @@
 %define	_root_sbindir	/sbin
-%define	_root_libdir	/%{_lib}
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.42.2
-Release: 2
+Version: 1.42.4
+Release: 1
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
 Group: System/Base
-Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
 Patch0: meego-time-check-preen-ok.patch
 Patch1: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
 Patch2: e2fsprogs-1.42-blocksize.patch
 
 Url: http://e2fsprogs.sourceforge.net/
-Obsoletes: e4fsprogs
-Provides: e4fsprogs
-BuildRequires: pkgconfig, texinfo
+BuildRequires: texinfo
 BuildRequires: pkgconfig(blkid)
 BuildRequires: pkgconfig(uuid)
 
@@ -129,14 +126,15 @@ It was originally inspired by the Multics SubSystem library.
 %patch2 -p1
 
 %build
-%configure --enable-elf-shlibs --enable-nls --disable-e2initrd-helper --disable-libblkid --disable-uuidd --disable-libuuid
-make %{?_smp_mflags} V=1
+%configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
+	   --disable-e2initrd-helper --disable-libblkid --disable-libuuid
+make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 export PATH=/sbin:$PATH
 make install install-libs DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p" \
-	root_sbindir=%{_root_sbindir} root_libdir=%{_root_libdir}
+	root_sbindir=%{_root_sbindir} root_libdir=%{_libdir}
 
 # ugly hack to allow parallel install of 32-bit and 64-bit -devel packages:
 %define multilib_arches %{ix86} x86_64
@@ -155,9 +153,6 @@ chmod -R u+w $RPM_BUILD_ROOT/*
 %if ! 0%{?qemu_user_space_build}
 make check
 %endif
-
-%clean
-rm -rf %{buildroot}
 
 %post libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -185,7 +180,6 @@ rm -rf %{buildroot}
 %{_root_sbindir}/e2image
 %{_root_sbindir}/e2label
 %{_root_sbindir}/e2undo
-%{_root_sbindir}/fsck
 %{_root_sbindir}/fsck.ext2
 %{_root_sbindir}/fsck.ext3
 %{_root_sbindir}/fsck.ext4
@@ -200,35 +194,38 @@ rm -rf %{buildroot}
 %{_root_sbindir}/tune2fs
 
 %{_sbindir}/filefrag
-%{_sbindir}/mklost+found
 %{_sbindir}/e2freefrag
 %{_sbindir}/e4defrag
+%{_sbindir}/mklost+found
 
 %{_bindir}/chattr
 %{_bindir}/lsattr
 
 %files libs
 %defattr(-,root,root)
-%{_root_libdir}/libe2p.so.*
-%{_root_libdir}/libext2fs.so.*
+%doc COPYING
+%{_libdir}/libe2p.so.*
+%{_libdir}/libext2fs.so.*
 
 %files devel
 %defattr(-,root,root)
 %{_infodir}/libext2fs.info*
 %{_libdir}/libe2p.a
 %{_libdir}/libe2p.so
-%{_libdir}/libquota.a
 %{_libdir}/libext2fs.a
 %{_libdir}/libext2fs.so
+%{_libdir}/libquota.a
 %{_libdir}/pkgconfig/e2p.pc
 %{_libdir}/pkgconfig/ext2fs.pc
 %{_libdir}/pkgconfig/quota.pc
+
 %{_includedir}/e2p
 %{_includedir}/ext2fs
-%{_includedir}/quota/mkquota.h
+%{_includedir}/quota
+
 %files -n libcom_err
 %defattr(-,root,root)
-%{_root_libdir}/libcom_err.so.*
+%{_libdir}/libcom_err.so.*
 
 %files -n libcom_err-devel
 %defattr(-,root,root)
@@ -242,7 +239,8 @@ rm -rf %{buildroot}
 
 %files -n libss
 %defattr(-,root,root)
-%{_root_libdir}/libss.so.*
+%doc COPYING
+%{_libdir}/libss.so.*
 
 %files -n libss-devel
 %defattr(-,root,root)
@@ -252,5 +250,4 @@ rm -rf %{buildroot}
 %{_datadir}/ss
 %{_includedir}/ss
 %{_libdir}/pkgconfig/ss.pc
-
 
