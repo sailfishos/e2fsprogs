@@ -12,6 +12,8 @@ Source1: ext2_types-wrapper.h
 Patch0: meego-time-check-preen-ok.patch
 Patch1: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
 Patch2: e2fsprogs-1.42-blocksize.patch
+Patch3: CVE-2015-0247.patch
+Patch4: CVE-2015-1572.patch
 
 Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: texinfo
@@ -124,6 +126,8 @@ It was originally inspired by the Multics SubSystem library.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
