@@ -1,3 +1,6 @@
+* Wed Feb 25 2015 Pasi Sjöholm <pasi.sjoholm@jollamobile.com> - 1.42.4
+- Fix CVE-2015-1572 and CVE-2015-0247
+
 * Tue Jul 24 2012 Marko Saukko <marko.saukko@jollamobile.com> - 1.42.4
 - Update to version 1.42.4
 - Drop fsck from the package, moved to util-linux
