@@ -10,6 +10,7 @@ Group: System/Base
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
 Patch0: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
+Patch1: e2fsprogs-1.43.1-Fix_incompatible_tests.patch
 
 Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: texinfo
@@ -120,6 +121,7 @@ It was originally inspired by the Multics SubSystem library.
 # mildly unsafe but 'til I get something better, avoid full fsck
 # after an selinux install...
 %patch0 -p1
+%patch1 -p1
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
@@ -150,7 +152,7 @@ chmod -R u+w $RPM_BUILD_ROOT/*
 # Tests are not run on OBS:
 %if ! 0%{?qemu_user_space_build}
 # One test currently does not pass because it requires a newer version of dd 
-# from a post-GPLv3 version. Tests were always disabled on OBS anyway.
+# from a post-GPLv3 version.
 make check
 %endif
 
