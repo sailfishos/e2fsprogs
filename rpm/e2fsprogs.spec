@@ -127,6 +127,8 @@ It was originally inspired by the Multics SubSystem library.
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
 	   --disable-e2initrd-helper --disable-libblkid --disable-libuuid \
 	   --disable-fuse2fs
+# Remove the m_hugefile test as it fails when built on tmpfs workers
+rm tests/m_hugefile/script
 make %{?_smp_mflags}
 
 %install
