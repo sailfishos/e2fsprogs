@@ -115,6 +115,15 @@ parses a command table to generate a simple command-line interface parser.
 
 It was originally inspired by the Multics SubSystem library.
 
+%package doc
+Summary:   Documentation for %{name}
+Group:     Documentation
+Requires:  %{name} = %{version}-%{release}
+Obsoletes: %{name}-docs
+
+%description doc
+Man and info pages for %{name}.
+
 %prep
 %setup -q -n %{name}-%{version}/%{name}
 # ignore some flag differences on primary/backup sb feature checks
@@ -128,7 +137,7 @@ It was originally inspired by the Multics SubSystem library.
 	   --disable-e2initrd-helper --disable-libblkid --disable-libuuid \
 	   --disable-fuse2fs
 # Remove the m_hugefile test as it fails when built on tmpfs workers
-rm tests/m_hugefile/script
+rm -f tests/m_hugefile/script
 make %{?_smp_mflags}
 
 %install
@@ -145,6 +154,10 @@ mv -f $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types.h \
       $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types-%{_arch}.h
 install -p -m 644 %{SOURCE1} $RPM_BUILD_ROOT%{_includedir}/ext2fs/ext2_types.h
 %endif
+
+mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+install -m0644 -t $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} \
+        README
 
 %find_lang %{name}
 
@@ -167,14 +180,12 @@ make check
 %post -n libss -p /sbin/ldconfig
 %postun -n libss -p /sbin/ldconfig
 
-%docs_package
-
 %lang_package
 
 
 %files 
 %defattr(-,root,root,-)
-%doc README 
+%license NOTICE
 
 %config(noreplace) /etc/mke2fs.conf
 %{_root_sbindir}/badblocks
@@ -208,13 +219,12 @@ make check
 
 %files libs
 %defattr(-,root,root)
-%doc NOTICE
+%license NOTICE
 %{_libdir}/libe2p.so.*
 %{_libdir}/libext2fs.so.*
 
 %files devel
 %defattr(-,root,root)
-%{_infodir}/libext2fs.info*
 %{_libdir}/libe2p.a
 %{_libdir}/libe2p.so
 %{_libdir}/libext2fs.a
@@ -241,7 +251,7 @@ make check
 
 %files -n libss
 %defattr(-,root,root)
-%doc NOTICE
+%license NOTICE
 %{_libdir}/libss.so.*
 
 %files -n libss-devel
@@ -253,3 +263,8 @@ make check
 %{_includedir}/ss
 %{_libdir}/pkgconfig/ss.pc
 
+%files doc
+%defattr(-,root,root)
+%{_infodir}/libext2fs.info*
+%{_mandir}/man*/*.*
+%{_docdir}/%{name}-%{version}

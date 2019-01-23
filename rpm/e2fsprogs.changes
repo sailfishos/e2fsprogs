@@ -34,15 +34,15 @@
 - Upgrade to 1.41.9 
 - Disable private libuuid&uuidd (replaced by util-linux-ng)
 
-* Thu Jul 17 2009 Austin Zhang <austin.zhang@intel.com> 1.41.8
+* Fri Jul 17 2009 Austin Zhang <austin.zhang@intel.com> - 1.41.8
 - Update to 1.41.8 and Disable blkid
  
-* Wed Dec 10 2008 Anas Nashif <anas.nashif@intel.com> 1.41.3
+* Wed Dec 10 2008 Anas Nashif <anas.nashif@intel.com> - 1.41.3
 - Disable uuidd daemon
 
-* Sun Nov 30 2008 Anas Nashif <anas.nashif@intel.com> 1.41.3
+* Sun Nov 30 2008 Anas Nashif <anas.nashif@intel.com> - 1.41.3
 - Added missing files
 
-* Sun Nov 30 2008 Anas Nashif <anas.nashif@intel.com> 1.41.3
+* Sun Nov 30 2008 Anas Nashif <anas.nashif@intel.com> - 1.41.3
 - Update to 1.41.3
 
