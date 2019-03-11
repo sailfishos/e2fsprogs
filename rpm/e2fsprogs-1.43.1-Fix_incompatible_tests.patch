@@ -19,18 +19,18 @@ index e4bc3c4..bde4ee7 100755
  OUT="$test_name.log"
  
  echo "testing mke2fs with -E offset=524288 option (no fssize)" > "$OUT"
--yes a | dd of="$TMPFILE" bs=1k count=2048 iflag=fullblock 2>>"$OUT"
-+yes a | dd of="$TMPFILE" bs=1k count=2048 2>>"$OUT"
+-yes a | $DD of="$TMPFILE" bs=1k count=2048 iflag=fullblock 2>>"$OUT"
++yes a | $DD of="$TMPFILE" bs=1k count=2048 2>>"$OUT"
  $MKE2FS -F -b 1024 -E offset=524288 "$TMPFILE" >> "$OUT" 2>&1
  # compute crc of the first 512 1k blocks
- crc_first1=`dd if="$TMPFILE" bs=1k count=512 2>/dev/null | $CRCSUM`
+ crc_first1=`$DD if="$TMPFILE" bs=1k count=512 2>/dev/null | $CRCSUM`
  
  echo "testing mke2fs with -E offset=524288 option (explicit fssize)" >> "$OUT"
--yes a | dd of="$TMPFILE" bs=1k count=2048 iflag=fullblock 2>>"$OUT"
-+yes a | dd of="$TMPFILE" bs=1k count=2048 2>>"$OUT"
+-yes a | $DD of="$TMPFILE" bs=1k count=2048 iflag=fullblock 2>>"$OUT"
++yes a | $DD of="$TMPFILE" bs=1k count=2048 2>>"$OUT"
  $MKE2FS -F -b 1024 -E offset=524288 "$TMPFILE" 1024 >> "$OUT" 2>&1
  # compute crc of the first and last 512 1k blocks
- crc_first2=`dd if="$TMPFILE" bs=1k count=512 2>/dev/null | $CRCSUM`
+ crc_first2=`$DD if="$TMPFILE" bs=1k count=512 2>/dev/null | $CRCSUM`
 diff --git a/tests/u_mke2fs_opt_offset/script b/tests/u_mke2fs_opt_offset/script
 deleted file mode 100644
 index 036b7b4..0000000
@@ -51,10 +51,10 @@ index 036b7b4..0000000
 -	rm -f "$TDB_FILE"
 -	echo "testing e2undo and mke2fs with the -E offset=$OFF option" >> "$OUT"
 -	# prepare $TMPFILE
--	yes a | dd of="$TMPFILE" bs="$OFF" count=1 iflag=fullblock \
+-	yes a | $DD of="$TMPFILE" bs="$OFF" count=1 iflag=fullblock \
 -		> /dev/null 2>>"$OUT"
--	yes b | dd bs=1k count=1024 iflag=fullblock >> "$TMPFILE" 2>>"$OUT"
--	yes c | dd bs=1k count=3 iflag=fullblock >> "$TMPFILE" 2>>"$OUT"
+-	yes b | $DD bs=1k count=1024 iflag=fullblock >> "$TMPFILE" 2>>"$OUT"
+-	yes c | $DD bs=1k count=3 iflag=fullblock >> "$TMPFILE" 2>>"$OUT"
 -
 -	crc_exp=`$CRCSUM "$TMPFILE"`
 -	$MKE2FS -F -z "$TDB_FILE" -b 1024 -E offset="$OFF" "$TMPFILE" 1024 \
@@ -108,7 +108,7 @@ index 036b7b4..0000000
 -	# data again (this might be considered as a bug (for now,
 -	# this testcase just documents this behavior))
 -	SEEK_BLOCKS=$(((2048 + 1024 * 1024) / 1024))
--	yes d | dd of="$TMPFILE" bs=1k count=2 seek="$SEEK_BLOCKS" \
+-	yes d | $DD of="$TMPFILE" bs=1k count=2 seek="$SEEK_BLOCKS" \
 -		iflag=fullblock > /dev/null 2>>"$OUT"
 -}
 -
