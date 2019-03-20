@@ -2,7 +2,7 @@
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.43.1
+Version: 1.45.0
 Release: 1
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
@@ -11,6 +11,7 @@ Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
 Patch0: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
 Patch1: e2fsprogs-1.43.1-Fix_incompatible_tests.patch
+Patch2: e2fsprogs-1.45.0-busybox_diff.patch
 
 Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: texinfo
@@ -131,11 +132,13 @@ Man and info pages for %{name}.
 # after an selinux install...
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
 	   --disable-e2initrd-helper --disable-libblkid --disable-libuuid \
-	   --disable-fuse2fs
+	   --disable-fuse2fs --with-udev-rules-dir=no --with-crond-dir=no \
+	   --with-systemd-unit-dir=no
 # Remove the m_hugefile test as it fails when built on tmpfs workers
 rm -f tests/m_hugefile/script
 make %{?_smp_mflags}
@@ -188,23 +191,25 @@ make check
 %license NOTICE
 
 %config(noreplace) /etc/mke2fs.conf
+%config(noreplace) /etc/e2scrub.conf
 %{_root_sbindir}/badblocks
 %{_root_sbindir}/debugfs
 %{_root_sbindir}/dumpe2fs
 %{_root_sbindir}/e2fsck
 %{_root_sbindir}/e2image
 %{_root_sbindir}/e2label
+%{_root_sbindir}/e2mmpstatus
+%{_root_sbindir}/e2scrub
+%{_root_sbindir}/e2scrub_all
 %{_root_sbindir}/e2undo
 %{_root_sbindir}/fsck.ext2
 %{_root_sbindir}/fsck.ext3
 %{_root_sbindir}/fsck.ext4
-%{_root_sbindir}/fsck.ext4dev
 %{_root_sbindir}/logsave
 %{_root_sbindir}/mke2fs
 %{_root_sbindir}/mkfs.ext2
 %{_root_sbindir}/mkfs.ext3
 %{_root_sbindir}/mkfs.ext4
-%{_root_sbindir}/mkfs.ext4dev
 %{_root_sbindir}/resize2fs
 %{_root_sbindir}/tune2fs
 

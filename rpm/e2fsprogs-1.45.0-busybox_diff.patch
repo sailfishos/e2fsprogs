@@ -1,0 +1,44 @@
+diff --git a/configure.ac b/configure.ac
+index 248b291d..4a2ccf37 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1300,8 +1300,8 @@ dnl
+ dnl Check for unified diff
+ dnl
+ AC_MSG_CHECKING(for unified diff option)
+-if diff -u $0 $0 > /dev/null 2>&1 ; then
+-   UNI_DIFF_OPTS=-u
++if diff -U $0 $0 > /dev/null 2>&1 ; then
++   UNI_DIFF_OPTS=-U 3
+ else
+    UNI_DIFF_OPTS=-c
+ fi
+diff --git a/lib/blkid/test_probe.in b/lib/blkid/test_probe.in
+index a7b29a2e..8a8d0001 100644
+--- a/lib/blkid/test_probe.in
++++ b/lib/blkid/test_probe.in
+@@ -50,7 +50,7 @@ do
+ 		touch tests/$i.ok
+ 	else	
+ 		echo failed
+-		diff -c tests/$i.out $RESULTS > tests/$i.failed
++		diff -U 3 tests/$i.out $RESULTS > tests/$i.failed
+ 	fi
+ done
+ 
+diff --git a/lib/et/Makefile.in b/lib/et/Makefile.in
+index 16e29ea4..cf03a1da 100644
+--- a/lib/et/Makefile.in
++++ b/lib/et/Makefile.in
+@@ -141,9 +141,9 @@ fullcheck check:: compile_et
+ 	for i in $(srcdir)/test_cases/*.et ; do \
+ 		t=`basename $$i | sed -e 's/.et//'`; \
+ 		_ET_DIR_OVERRIDE=$(srcdir) ./compile_et $$i ; \
+-		diff -c $(srcdir)/test_cases/$$t.c $$t.c > $$t.failed; \
++		diff -U 3 $(srcdir)/test_cases/$$t.c $$t.c > $$t.failed; \
+ 		if [ $$? -ne 0 ]; then echo Test case $$t failed; exit 1 ; fi ; \
+-		diff -c $(srcdir)/test_cases/$$t.h $$t.h >> $$t.failed; \
++		diff -U 3 $(srcdir)/test_cases/$$t.h $$t.h >> $$t.failed; \
+ 		if [ $$? -ne 0 ]; then echo Test case $$t failed; exit 1 ; fi ; \
+ 		$(RM) -f $$t.c $$t.h $$t.failed; \
+ 		echo "Test case $$t succeeded" ; \
