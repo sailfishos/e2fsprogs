@@ -1,5 +1,3 @@
-%define	_root_sbindir	/sbin
-
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
 Version: 1.45.0
@@ -17,6 +15,7 @@ Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: texinfo
 BuildRequires: pkgconfig(blkid)
 BuildRequires: pkgconfig(uuid)
+Requires:      filesystem >= 3.2
 
 %description
 The e2fsprogs package contains a number of utilities for creating,
@@ -147,7 +146,7 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 export PATH=/sbin:$PATH
 make install install-libs DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p" \
-	root_sbindir=%{_root_sbindir} root_libdir=%{_libdir}
+	root_sbindir=%{_sbindir} root_libdir=%{_libdir}
 
 # ugly hack to allow parallel install of 32-bit and 64-bit -devel packages:
 %define multilib_arches %{ix86} x86_64
@@ -169,7 +168,7 @@ chmod -R u+w $RPM_BUILD_ROOT/*
 %check
 # Tests are not run on OBS:
 %if ! 0%{?qemu_user_space_build}
-# One test currently does not pass because it requires a newer version of dd 
+# One test currently does not pass because it requires a newer version of dd
 # from a post-GPLv3 version.
 make check
 %endif
@@ -186,32 +185,32 @@ make check
 %lang_package
 
 
-%files 
+%files
 %defattr(-,root,root,-)
 %license NOTICE
 
 %config(noreplace) /etc/mke2fs.conf
 %config(noreplace) /etc/e2scrub.conf
-%{_root_sbindir}/badblocks
-%{_root_sbindir}/debugfs
-%{_root_sbindir}/dumpe2fs
-%{_root_sbindir}/e2fsck
-%{_root_sbindir}/e2image
-%{_root_sbindir}/e2label
-%{_root_sbindir}/e2mmpstatus
-%{_root_sbindir}/e2scrub
-%{_root_sbindir}/e2scrub_all
-%{_root_sbindir}/e2undo
-%{_root_sbindir}/fsck.ext2
-%{_root_sbindir}/fsck.ext3
-%{_root_sbindir}/fsck.ext4
-%{_root_sbindir}/logsave
-%{_root_sbindir}/mke2fs
-%{_root_sbindir}/mkfs.ext2
-%{_root_sbindir}/mkfs.ext3
-%{_root_sbindir}/mkfs.ext4
-%{_root_sbindir}/resize2fs
-%{_root_sbindir}/tune2fs
+%{_sbindir}/badblocks
+%{_sbindir}/debugfs
+%{_sbindir}/dumpe2fs
+%{_sbindir}/e2fsck
+%{_sbindir}/e2image
+%{_sbindir}/e2label
+%{_sbindir}/e2mmpstatus
+%{_sbindir}/e2scrub
+%{_sbindir}/e2scrub_all
+%{_sbindir}/e2undo
+%{_sbindir}/fsck.ext2
+%{_sbindir}/fsck.ext3
+%{_sbindir}/fsck.ext4
+%{_sbindir}/logsave
+%{_sbindir}/mke2fs
+%{_sbindir}/mkfs.ext2
+%{_sbindir}/mkfs.ext3
+%{_sbindir}/mkfs.ext4
+%{_sbindir}/resize2fs
+%{_sbindir}/tune2fs
 
 %{_sbindir}/filefrag
 %{_sbindir}/e2freefrag
