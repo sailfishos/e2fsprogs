@@ -190,8 +190,8 @@ make check
 %defattr(-,root,root,-)
 %license NOTICE
 
-%config(noreplace) /etc/mke2fs.conf
-%config(noreplace) /etc/e2scrub.conf
+%config /etc/mke2fs.conf
+%config /etc/e2scrub.conf
 %{_root_sbindir}/badblocks
 %{_root_sbindir}/debugfs
 %{_root_sbindir}/dumpe2fs
