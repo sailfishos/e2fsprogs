@@ -12,6 +12,7 @@ Source1: ext2_types-wrapper.h
 Patch0: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
 Patch1: e2fsprogs-1.43.1-Fix_incompatible_tests.patch
 Patch2: e2fsprogs-1.45.0-busybox_diff.patch
+Patch3: e2fsprogs-1.45.0-Revert-mke2fs.conf-enable-metadata_csum-by-default.patch
 
 Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: texinfo
@@ -133,6 +134,7 @@ Man and info pages for %{name}.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
