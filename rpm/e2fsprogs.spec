@@ -2,11 +2,10 @@
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.45.0
+Version: 1.45.4
 Release: 1
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
-Group: System/Base
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
 Patch0: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
@@ -36,7 +35,6 @@ performance of an ext2, ext3, or ext4 filesystem.
 
 %package libs
 Summary: Ext2/3/4 filesystem-specific shared libraries and headers
-Group: System/Libraries
 License: GPLv2 and LGPLv2
 Requires(post): /sbin/ldconfig
 
@@ -49,7 +47,6 @@ from userspace.
 
 %package devel
 Summary: Ext2/3/4 filesystem-specific static libraries and headers
-Group: Development/Libraries
 License: GPLv2 and LGPLv2
 Requires: e2fsprogs-libs = %{version}-%{release}
 Requires: gawk
@@ -66,7 +63,6 @@ also want to install e2fsprogs.
 
 %package -n libcom_err
 Summary: Common error description library
-Group: System/Libraries
 License: MIT
 
 %description -n libcom_err
@@ -76,7 +72,6 @@ libcom_err is an attempt to present a common error-handling mechanism.
 
 %package -n libcom_err-devel
 Summary: Common error description library
-Group: Development/Libraries
 License: MIT
 Requires: libcom_err = %{version}-%{release}
 Requires: pkgconfig
@@ -91,7 +86,6 @@ libcom_err is an attempt to present a common error-handling mechanism.
 
 %package -n libss
 Summary: Command line interface parsing library
-Group: System/Libraries
 License: MIT
 
 %description -n libss
@@ -105,7 +99,6 @@ It was originally inspired by the Multics SubSystem library.
 
 %package -n libss-devel
 Summary: Command line interface parsing library
-Group: Development/Libraries
 License: MIT
 Requires: libss = %{version}-%{release}
 Requires: pkgconfig
@@ -119,7 +112,6 @@ It was originally inspired by the Multics SubSystem library.
 
 %package doc
 Summary:   Documentation for %{name}
-Group:     Documentation
 Requires:  %{name} = %{version}-%{release}
 Obsoletes: %{name}-docs
 
