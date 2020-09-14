@@ -14,7 +14,6 @@ Patch2: e2fsprogs-1.45.0-busybox_diff.patch
 Patch3: e2fsprogs-1.45.0-Revert-mke2fs.conf-enable-metadata_csum-by-default.patch
 
 Url: http://e2fsprogs.sourceforge.net/
-BuildRequires: texinfo
 BuildRequires: pkgconfig(blkid)
 BuildRequires: pkgconfig(uuid)
 
@@ -264,6 +263,5 @@ make check
 
 %files doc
 %defattr(-,root,root)
-%{_infodir}/libext2fs.info*
 %{_mandir}/man*/*.*
 %{_docdir}/%{name}-%{version}
