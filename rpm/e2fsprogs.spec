@@ -14,8 +14,14 @@ Patch2: e2fsprogs-1.45.0-busybox_diff.patch
 Patch3: e2fsprogs-1.45.0-Revert-mke2fs.conf-enable-metadata_csum-by-default.patch
 
 Url: http://e2fsprogs.sourceforge.net/
+
+%bcond_with intree_blkid_uuid
+# In case we want to don't have a fully working util-linux
+# enable to build with intree libblkid and libuuid
+%if %{without intree_blkid_uuid}
 BuildRequires: pkgconfig(blkid)
 BuildRequires: pkgconfig(uuid)
+%endif
 
 %description
 The e2fsprogs package contains a number of utilities for creating,
@@ -128,8 +134,10 @@ Man and info pages for %{name}.
 %patch3 -p1
 
 %build
-%configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
-	   --disable-e2initrd-helper --disable-libblkid --disable-libuuid \
+%configure --enable-elf-shlibs --enable-nls \
+           %{?with_intree_blkid_uuid --disable-libuuid --disable-libblkid} \
+           --disable-fsck \
+	   --disable-e2initrd-helper  --disable-uuidd\
 	   --disable-fuse2fs --with-udev-rules-dir=no --with-crond-dir=no \
 	   --with-systemd-unit-dir=no
 # Remove the m_hugefile test as it fails when built on tmpfs workers
@@ -215,11 +223,22 @@ make check
 %{_bindir}/chattr
 %{_bindir}/lsattr
 
+%if %{with intree_blkid_uuid}
+%{_root_sbindir}/blkid
+%{_root_sbindir}/findfs
+%{_bindir}/uuidgen
+%endif
+
 %files libs
 %defattr(-,root,root)
 %license NOTICE
 %{_libdir}/libe2p.so.*
 %{_libdir}/libext2fs.so.*
+
+%if %{with intree_blkid_uuid}
+%{_libdir}/libuuid.so.*
+%{_libdir}/libblkid.so.*
+%endif
 
 %files devel
 %defattr(-,root,root)
@@ -232,6 +251,21 @@ make check
 
 %{_includedir}/e2p
 %{_includedir}/ext2fs
+
+%if %{with intree_blkid_uuid}
+%{_libdir}/libblkid.a
+%{_libdir}/libblkid.so
+
+%{_libdir}/libuuid.a
+%{_libdir}/libuuid.so
+
+%{_libdir}/pkgconfig/blkid.pc
+%{_libdir}/pkgconfig/uuid.pc
+
+%{_includedir}/blkid/blkid.h
+%{_includedir}/blkid/blkid_types.h
+%{_includedir}/uuid/uuid.h
+%endif
 
 %files -n libcom_err
 %defattr(-,root,root)
