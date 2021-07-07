@@ -257,8 +257,8 @@ make check
 %{_includedir}/ext2fs
 
 %if %{with intree_blkid_uuid}
-%{_libdir}/libblkid.a
-%{_libdir}/libblkid.so
+#%{_libdir}/libblkid.a
+#%{_libdir}/libblkid.so
 
 #%{_libdir}/libuuid.a
 #%{_libdir}/libuuid.so
