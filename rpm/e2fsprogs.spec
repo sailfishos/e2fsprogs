@@ -167,8 +167,8 @@ install -m0644 -t $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} \
 
 chmod -R u+w $RPM_BUILD_ROOT/*
 
-rm $RPM_BUILD_ROOT%{_libdir}libblkid*
-rm $RPM_BUILD_ROOT%{_libdir}libuuid*
+rm $RPM_BUILD_ROOT%{_libdir}/libblkid*
+rm $RPM_BUILD_ROOT%{_libdir}/libuuid*
 
 
 %check
