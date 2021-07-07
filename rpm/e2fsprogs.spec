@@ -167,6 +167,9 @@ install -m0644 -t $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} \
 
 chmod -R u+w $RPM_BUILD_ROOT/*
 
+rm -rf %{_libdir}/libuuid.so.* \
+   %{_libdir}/libblkid.so.*
+
 %check
 # Tests are not run on OBS:
 %if ! 0%{?qemu_user_space_build}
@@ -235,10 +238,10 @@ make check
 %{_libdir}/libe2p.so.*
 %{_libdir}/libext2fs.so.*
 
-%if %{with intree_blkid_uuid}
-%{_libdir}/libuuid.so.*
-%{_libdir}/libblkid.so.*
-%endif
+# %if %{with intree_blkid_uuid}
+# %{_libdir}/libuuid.so.*
+# %{_libdir}/libblkid.so.*
+# %endif
 
 %files devel
 %defattr(-,root,root)
