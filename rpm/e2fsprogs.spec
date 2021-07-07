@@ -236,8 +236,8 @@ make check
 %{_libdir}/libext2fs.so.*
 
 %if %{with intree_blkid_uuid}
-%{_libdir}/libuuid.so.*
-%{_libdir}/libblkid.so.*
+#%{_libdir}/libuuid.so.*
+#%{_libdir}/libblkid.so.*
 %endif
 
 %files devel
@@ -256,8 +256,8 @@ make check
 %{_libdir}/libblkid.a
 %{_libdir}/libblkid.so
 
-%{_libdir}/libuuid.a
-%{_libdir}/libuuid.so
+#%{_libdir}/libuuid.a
+#%{_libdir}/libuuid.so
 
 %{_libdir}/pkgconfig/blkid.pc
 %{_libdir}/pkgconfig/uuid.pc
