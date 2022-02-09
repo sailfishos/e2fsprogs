@@ -1,4 +1,4 @@
-From 9cce69fdf808523427cd339454692a77ed0198d3 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Andrew Branson <andrew.branson@jollamobile.com>
 Date: Thu, 25 Aug 2016 10:04:55 +0200
 Subject: [PATCH] Fix incompatible tests. Tests incompatible with current
@@ -7,12 +7,12 @@ Subject: [PATCH] Fix incompatible tests. Tests incompatible with current
 
 ---
  tests/m_offset/script            |   4 +-
- tests/u_mke2fs_opt_offset/script | 104 ---------------------------------------
+ tests/u_mke2fs_opt_offset/script | 104 -------------------------------
  2 files changed, 2 insertions(+), 106 deletions(-)
  delete mode 100644 tests/u_mke2fs_opt_offset/script
 
 diff --git a/tests/m_offset/script b/tests/m_offset/script
-index e4bc3c4..bde4ee7 100755
+index d49e555e..f24f8087 100755
 --- a/tests/m_offset/script
 +++ b/tests/m_offset/script
 @@ -2,13 +2,13 @@ test_description="mke2fs with offset option (-E offset=N)"
@@ -33,7 +33,7 @@ index e4bc3c4..bde4ee7 100755
  crc_first2=`$DD if="$TMPFILE" bs=1k count=512 2>/dev/null | $CRCSUM`
 diff --git a/tests/u_mke2fs_opt_offset/script b/tests/u_mke2fs_opt_offset/script
 deleted file mode 100644
-index 036b7b4..0000000
+index 4b34b7a8..00000000
 --- a/tests/u_mke2fs_opt_offset/script
 +++ /dev/null
 @@ -1,104 +0,0 @@
@@ -142,5 +142,5 @@ index 036b7b4..0000000
 -	touch "$test_name.ok"
 -fi
 -- 
-2.7.4
+2.34.1
 
