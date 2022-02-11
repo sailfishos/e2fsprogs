@@ -1,8 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Pekka Vuorela <pekka.vuorela@jolla.com>
+Date: Wed, 9 Feb 2022 16:05:16 +0200
+Subject: [PATCH] Fix build of tests using diff from busybox.
+
+---
+ configure.ac            | 4 ++--
+ lib/blkid/test_probe.in | 2 +-
+ lib/et/Makefile.in      | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
 diff --git a/configure.ac b/configure.ac
-index 248b291d..4a2ccf37 100644
+index dff3d1ca..47f693b7 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1300,8 +1300,8 @@ dnl
+@@ -1358,8 +1358,8 @@ dnl
  dnl Check for unified diff
  dnl
  AC_MSG_CHECKING(for unified diff option)
@@ -27,10 +38,10 @@ index a7b29a2e..8a8d0001 100644
  done
  
 diff --git a/lib/et/Makefile.in b/lib/et/Makefile.in
-index 16e29ea4..cf03a1da 100644
+index d411f231..e50e7cf7 100644
 --- a/lib/et/Makefile.in
 +++ b/lib/et/Makefile.in
-@@ -141,9 +141,9 @@ fullcheck check:: compile_et
+@@ -142,9 +142,9 @@ fullcheck check:: compile_et
  	for i in $(srcdir)/test_cases/*.et ; do \
  		t=`basename $$i | sed -e 's/.et//'`; \
  		_ET_DIR_OVERRIDE=$(srcdir) ./compile_et $$i ; \
@@ -42,3 +53,6 @@ index 16e29ea4..cf03a1da 100644
  		if [ $$? -ne 0 ]; then echo Test case $$t failed; exit 1 ; fi ; \
  		$(RM) -f $$t.c $$t.h $$t.failed; \
  		echo "Test case $$t succeeded" ; \
+-- 
+2.34.1
+

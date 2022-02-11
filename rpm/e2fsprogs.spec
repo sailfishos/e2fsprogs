@@ -2,16 +2,15 @@
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.45.4
+Version: 1.46.5
 Release: 1
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
-Patch0: e2fsprogs-1.40.4-sb_feature_check_ignore.patch
-Patch1: e2fsprogs-1.43.1-Fix_incompatible_tests.patch
-Patch2: e2fsprogs-1.45.0-busybox_diff.patch
-Patch3: e2fsprogs-1.45.0-Revert-mke2fs.conf-enable-metadata_csum-by-default.patch
+Patch1: 0001-Fix-incompatible-tests.-Tests-incompatible-with-curr.patch
+Patch2: 0002-Fix-build-of-tests-using-diff-from-busybox.patch
+Patch3: 0003-Revert-mke2fs.conf-enable-metadata_csum-by-default.patch
 
 Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: pkgconfig(blkid)
@@ -112,20 +111,12 @@ It was originally inspired by the Multics SubSystem library.
 %package doc
 Summary:   Documentation for %{name}
 Requires:  %{name} = %{version}-%{release}
-Obsoletes: %{name}-docs
 
 %description doc
 Man and info pages for %{name}.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
-# ignore some flag differences on primary/backup sb feature checks
-# mildly unsafe but 'til I get something better, avoid full fsck
-# after an selinux install...
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
