@@ -2,7 +2,7 @@
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.46.5
+Version: 1.47.0
 Release: 1
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
@@ -10,7 +10,7 @@ Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
 Patch1: 0001-Fix-incompatible-tests.-Tests-incompatible-with-curr.patch
 Patch2: 0002-Fix-build-of-tests-using-diff-from-busybox.patch
-Patch3: 0003-Revert-mke2fs.conf-enable-metadata_csum-by-default.patch
+Patch3: 0003-Revert-enabling-metadata_csum-metadata_csum_seed-and.patch
 
 Url: http://e2fsprogs.sourceforge.net/
 BuildRequires: pkgconfig(blkid)

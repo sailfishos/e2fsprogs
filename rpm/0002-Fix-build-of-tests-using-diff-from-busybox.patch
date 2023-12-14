@@ -10,10 +10,10 @@ Subject: [PATCH] Fix build of tests using diff from busybox.
  3 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index dff3d1ca..47f693b7 100644
+index 017a96ffe29064dde7c75dfb4f2578ad283efbb9..952ca7d4ca34a4a0bb00e2c1603de9d67df75334 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1358,8 +1358,8 @@ dnl
+@@ -1409,8 +1409,8 @@ dnl
  dnl Check for unified diff
  dnl
  AC_MSG_CHECKING(for unified diff option)
@@ -25,7 +25,7 @@ index dff3d1ca..47f693b7 100644
     UNI_DIFF_OPTS=-c
  fi
 diff --git a/lib/blkid/test_probe.in b/lib/blkid/test_probe.in
-index a7b29a2e..8a8d0001 100644
+index a7b29a2e73df7ab5212ad225180511a48f4fefb1..8a8d0001a935604696ce8ee206d4ec5f05f00426 100644
 --- a/lib/blkid/test_probe.in
 +++ b/lib/blkid/test_probe.in
 @@ -50,7 +50,7 @@ do
@@ -38,7 +38,7 @@ index a7b29a2e..8a8d0001 100644
  done
  
 diff --git a/lib/et/Makefile.in b/lib/et/Makefile.in
-index d411f231..e50e7cf7 100644
+index d411f231cf3ce4300f69d17d61c51ca1e47d51ab..e50e7cf7c07cfa20f8c93fea7fe19bb8bc8d0065 100644
 --- a/lib/et/Makefile.in
 +++ b/lib/et/Makefile.in
 @@ -142,9 +142,9 @@ fullcheck check:: compile_et
@@ -53,6 +53,3 @@ index d411f231..e50e7cf7 100644
  		if [ $$? -ne 0 ]; then echo Test case $$t failed; exit 1 ; fi ; \
  		$(RM) -f $$t.c $$t.h $$t.failed; \
  		echo "Test case $$t succeeded" ; \
--- 
-2.34.1
-

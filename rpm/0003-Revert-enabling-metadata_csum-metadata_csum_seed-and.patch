@@ -1,0 +1,41 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@jolla.com>
+Date: Thu, 14 Dec 2023 18:49:36 +0200
+Subject: [PATCH] Revert enabling metadata_csum, metadata_csum_seed and
+ orphan_file features by default in mke2fs.conf
+
+Revert "Fix typo in defeult /etc/mke2fs.conf file"
+
+This reverts commit 515268b0bd27987ba919f92d8e9aa2d3bb0f11bc.
+
+Revert "mke2fs.conf: enable the metadata_csum_seed and orphan_file features by default"
+
+This reverts commit fe341d59ee9696f66ec8cd1bf9615ee1a107824f.
+
+Revert "mke2fs.conf: enable metadata_csum by default"
+
+This reverts commit d0b9e0a6aa7d6805338a43b4e372623352d8df09.
+
+Ext4 metadata_csum and metadata_csum_seed configs will cause mounting problems
+with older kernel versions when ext4 filesystem is created on machine which
+is running relative new kernel version (4.9, 5.0, etc).
+
+The orphan_file feature is a feature which is first supported
+in the Linux kernel in 5.15.
+---
+ misc/mke2fs.conf.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/misc/mke2fs.conf.in b/misc/mke2fs.conf.in
+index b7fc95df7acfc49ba0395fde4a8afc566cd7e9e5..28088fb9d418ee6724406c265999a41c90cdae6c 100644
+--- a/misc/mke2fs.conf.in
++++ b/misc/mke2fs.conf.in
+@@ -11,7 +11,7 @@
+ 		features = has_journal
+ 	}
+ 	ext4 = {
+-		features = has_journal,extent,huge_file,flex_bg,metadata_csum,metadata_csum_seed,64bit,dir_nlink,extra_isize,orphan_file
++		features = has_journal,extent,huge_file,flex_bg,uninit_bg,64bit,dir_nlink,extra_isize
+ 	}
+ 	small = {
+ 		blocksize = 1024

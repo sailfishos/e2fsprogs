@@ -12,7 +12,7 @@ Subject: [PATCH] Fix incompatible tests. Tests incompatible with current
  delete mode 100644 tests/u_mke2fs_opt_offset/script
 
 diff --git a/tests/m_offset/script b/tests/m_offset/script
-index d49e555e..f24f8087 100755
+index d49e555e78d58b627f2cb9aa0cca9455cc402ab6..f24f808700b3066373575706f5fba8c347a2634a 100755
 --- a/tests/m_offset/script
 +++ b/tests/m_offset/script
 @@ -2,13 +2,13 @@ test_description="mke2fs with offset option (-E offset=N)"
@@ -33,7 +33,7 @@ index d49e555e..f24f8087 100755
  crc_first2=`$DD if="$TMPFILE" bs=1k count=512 2>/dev/null | $CRCSUM`
 diff --git a/tests/u_mke2fs_opt_offset/script b/tests/u_mke2fs_opt_offset/script
 deleted file mode 100644
-index 4b34b7a8..00000000
+index 4b34b7a8311bbc86d421d651832eb598af83cb34..0000000000000000000000000000000000000000
 --- a/tests/u_mke2fs_opt_offset/script
 +++ /dev/null
 @@ -1,104 +0,0 @@
@@ -141,6 +141,3 @@ index 4b34b7a8..00000000
 -	echo "$test_name: $test_description: ok"
 -	touch "$test_name.ok"
 -fi
--- 
-2.34.1
-
