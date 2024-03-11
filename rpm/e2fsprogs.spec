@@ -8,7 +8,6 @@ Release: 1
 License: GPLv2
 Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
-Patch1: 0001-Fix-incompatible-tests.-Tests-incompatible-with-curr.patch
 Patch2: 0002-Fix-build-of-tests-using-diff-from-busybox.patch
 Patch3: 0003-Revert-enabling-metadata_csum-metadata_csum_seed-and.patch
 
