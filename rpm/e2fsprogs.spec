@@ -2,16 +2,16 @@
 
 Summary: Utilities for managing ext2, ext3, and ext4 filesystems
 Name: e2fsprogs
-Version: 1.47.0
+Version: 1.47.2
 Release: 1
 # License tags based on COPYING file distinctions for various components
 License: GPLv2
-Source0: http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
+Source0: %{name}-%{version}.tar.xz
 Source1: ext2_types-wrapper.h
-Patch2: 0002-Fix-build-of-tests-using-diff-from-busybox.patch
-Patch3: 0003-Revert-enabling-metadata_csum-metadata_csum_seed-and.patch
+Patch1: 0001-Fix-build-of-tests-using-diff-from-busybox.patch
+Patch2: 0002-Revert-enabling-metadata_csum-metadata_csum_seed-and.patch
 
-Url: http://e2fsprogs.sourceforge.net/
+Url: https://github.com/sailfishos/e2fsprogs
 BuildRequires: pkgconfig(blkid)
 BuildRequires: pkgconfig(uuid)
 
@@ -119,18 +119,17 @@ Man and info pages for %{name}.
 
 %build
 %configure --enable-elf-shlibs --enable-nls --disable-uuidd --disable-fsck \
-	   --disable-e2initrd-helper --disable-libblkid --disable-libuuid \
-	   --disable-fuse2fs --with-udev-rules-dir=no --with-crond-dir=no \
-	   --with-systemd-unit-dir=no
+           --disable-e2initrd-helper --disable-libblkid --disable-libuuid \
+           --disable-fuse2fs --with-udev-rules-dir=no --with-crond-dir=no \
+           --with-systemd-unit-dir=no
 # Remove the m_hugefile test as it fails when built on tmpfs workers
 rm -f tests/m_hugefile/script
-make %{?_smp_mflags}
+%make_build
 
 %install
-rm -rf %{buildroot}
 export PATH=/sbin:$PATH
-make install install-libs DESTDIR=$RPM_BUILD_ROOT INSTALL="%{__install} -p" \
-	root_sbindir=%{_root_sbindir} root_libdir=%{_libdir}
+%make_install install-libs \
+      root_sbindir=%{_root_sbindir} root_libdir=%{_libdir}
 
 # ugly hack to allow parallel install of 32-bit and 64-bit -devel packages:
 %define multilib_arches %{ix86} x86_64
@@ -170,7 +169,6 @@ make check
 
 
 %files 
-%defattr(-,root,root,-)
 %license NOTICE
 
 %config /etc/mke2fs.conf
@@ -206,13 +204,11 @@ make check
 %{_bindir}/lsattr
 
 %files libs
-%defattr(-,root,root)
 %license NOTICE
 %{_libdir}/libe2p.so.*
 %{_libdir}/libext2fs.so.*
 
 %files devel
-%defattr(-,root,root)
 %{_libdir}/libe2p.a
 %{_libdir}/libe2p.so
 %{_libdir}/libext2fs.a
@@ -224,11 +220,9 @@ make check
 %{_includedir}/ext2fs
 
 %files -n libcom_err
-%defattr(-,root,root)
 %{_libdir}/libcom_err.so.*
 
 %files -n libcom_err-devel
-%defattr(-,root,root)
 %{_bindir}/compile_et
 %{_libdir}/libcom_err.a
 %{_libdir}/libcom_err.so
@@ -238,12 +232,10 @@ make check
 %{_libdir}/pkgconfig/com_err.pc
 
 %files -n libss
-%defattr(-,root,root)
 %license NOTICE
 %{_libdir}/libss.so.*
 
 %files -n libss-devel
-%defattr(-,root,root)
 %{_bindir}/mk_cmds
 %{_libdir}/libss.a
 %{_libdir}/libss.so
@@ -252,6 +244,5 @@ make check
 %{_libdir}/pkgconfig/ss.pc
 
 %files doc
-%defattr(-,root,root)
 %{_mandir}/man*/*.*
 %{_docdir}/%{name}-%{version}
