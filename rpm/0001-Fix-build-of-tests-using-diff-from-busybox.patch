@@ -10,10 +10,10 @@ Subject: [PATCH] Fix build of tests using diff from busybox.
  3 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index 017a96ffe29064dde7c75dfb4f2578ad283efbb9..952ca7d4ca34a4a0bb00e2c1603de9d67df75334 100644
+index 1f67604036b5281a5147aa4351f8f44d6b085a6f..3f922708e161d60601875a379172f7b6e2656390 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1409,8 +1409,8 @@ dnl
+@@ -1496,8 +1496,8 @@ dnl
  dnl Check for unified diff
  dnl
  AC_MSG_CHECKING(for unified diff option)
